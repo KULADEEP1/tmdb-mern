@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 const signupUser = async (req, res) => {
   try {
     const { username, email, password, confirmPassword } = req.body;
+    console.log(username,email,password);
     const existUser = await User.findOne({ email: email });
     if (existUser) {
       return res.status(404).json({ message: "User already exists." });
