@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const user = useSelector((state) => state.user);
@@ -29,6 +29,8 @@ const LoginPage = () => {
       if (response.status === 201) {
         toast.success("User login successfull");
         const { existUser, token } = response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("userInfo", JSON.stringify(existUser));
         dispatch(
           setUser({
             userInfo: existUser,
@@ -45,8 +47,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user.isAuthenticated) {
-      console.log("Token:", user.token);
-      console.log("User Info:", user.userInfo);
+      // console.log("Token:", user.token);
+      // console.log("User Info:", user.userInfo);
       navigate("/");
     }
   }, [user]);
