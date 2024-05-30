@@ -1,11 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Button, Container, Icon, Menu, Segment } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../redux/slice/userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const handleSinupButton = () => {
@@ -26,7 +27,14 @@ const Navbar = () => {
     <Segment
       inverted
       textAlign="center"
-      style={{ padding: "1em 0em" }}
+      style={{
+        padding: "1em 0em",
+        position: "fixed",
+        top: "0",
+        left: "0",
+        right: "0",
+        zIndex: "1000",
+      }}
       vertical
     >
       <Menu inverted pointing secondary size="large">
@@ -35,12 +43,26 @@ const Navbar = () => {
             <span style={{ color: "white" }}>The </span>
             <span style={{ color: "red" }}>TMDB</span>
           </Menu.Item>
-          <Menu.Item as="a" active>
+          <Menu.Item as={Link} to="/" active={location.pathname === "/"}>
             Home
           </Menu.Item>
-          <Menu.Item as="a">Work</Menu.Item>
-          <Menu.Item as="a">Company</Menu.Item>
-          <Menu.Item as="a">Careers</Menu.Item>
+          <Menu.Item
+            as={Link}
+            to="/movie"
+            active={location.pathname === "/movie"}
+          >
+            Movies
+          </Menu.Item>
+          <Menu.Item as={Link} to="/tv" active={location.pathname === "/tv"}>
+            TV shows
+          </Menu.Item>
+          <Menu.Item
+            as={Link}
+            to="/contact"
+            active={location.pathname === "/contact"}
+          >
+            Contact Us
+          </Menu.Item>
           {!user.isAuthenticated ? (
             <Menu.Item position="right">
               <Button onClick={handleLoginButton} as="a" inverted>
@@ -61,7 +83,7 @@ const Navbar = () => {
                 onClick={handleLogoutButton}
                 as="a"
                 color="red"
-                style={{marginLeft:"42rem" }}
+                style={{ marginLeft: "40rem" }}
               >
                 <Icon name="user" /> Logout
               </Button>

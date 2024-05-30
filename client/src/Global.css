@@ -1,0 +1,11 @@
+/* App.css */
+body {
+    background-color: black;
+    /* Set the background color to a shade of black */
+    color: white;
+    /* Set text color to contrast with the background */
+    margin: 0;
+    /* Remove default margin */
+    padding: 0;
+    /* Remove default padding */
+}

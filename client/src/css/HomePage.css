@@ -1,0 +1,23 @@
+
+.popular-series{
+    margin-bottom: 30px;
+}
+.top-rated-movies{
+    margin-bottom: 30px;
+}
+.popular-movies{
+    margin-bottom: 30px;
+}
+.ui.grid {
+    margin: -10px;
+}
+
+
+.ui.card {
+    margin: 20px 0;
+}
+
+.ui.grid>.column {
+    padding-left: 5px;
+    padding-right: 5px;
+}
