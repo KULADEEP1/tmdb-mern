@@ -67,3 +67,12 @@ export const getSeriesAPI = async (page) => {
     throw error;
   }
 };
+
+export const getMovieDataAPI = async (id,type) => {
+  try {
+    const response = await api.get(`/${type}/${id}?api_key=${TMDB_API_KEY}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

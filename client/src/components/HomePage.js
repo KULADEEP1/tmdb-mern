@@ -80,7 +80,7 @@ const HomePage = () => {
                 key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
-                <DisplayMovie movie={movie} />
+                <DisplayMovie movie={movie} type="movie" />
               </Grid.Column>
             ))}
           </Grid>
@@ -104,7 +104,7 @@ const HomePage = () => {
                 key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
-                <DisplayMovie movie={movie} />
+                <DisplayMovie movie={movie} type="tv" />
               </Grid.Column>
             ))}
           </Grid>
@@ -128,7 +128,7 @@ const HomePage = () => {
                 key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
-                <DisplayMovie movie={movie} />
+                <DisplayMovie movie={movie} type="movie" />
               </Grid.Column>
             ))}
           </Grid>
@@ -152,7 +152,7 @@ const HomePage = () => {
                 key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
-                <DisplayMovie movie={movie} />
+                <DisplayMovie movie={movie} type="tv" />
               </Grid.Column>
             ))}
           </Grid>

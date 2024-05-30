@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser, clearUser } from "./redux/slice/userSlice";
 import MoviesList from "./components/MoviesList";
 import TvShowsList from './components/TvShowsList'
-
+import MediaDetail from "./components/MediaDetail";
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -50,8 +50,10 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/movie" element={<MoviesList/>} />
-            <Route path="/tv" element={<TvShowsList/>}/>
+            <Route path="/movie" element={<MoviesList />} />
+            <Route path="/tv" element={<TvShowsList />} />
+            <Route path="/movie/:id" element={<MediaDetail />} />
+            <Route path="/tv/:id" element={<MediaDetail />} />
           </Routes>
         </Layout>
       </Router>

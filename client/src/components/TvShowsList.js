@@ -68,7 +68,7 @@ const TvShowsList = () => {
                 key={movie.id}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
-                <DisplayMovie movie={movie} />
+                <DisplayMovie movie={movie} type="tv" />
               </Grid.Column>
             ))}
           </Grid>
