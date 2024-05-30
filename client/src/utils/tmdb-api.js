@@ -28,21 +28,42 @@ export const getPopularSeriesAPI = async () => {
   }
 };
 
-export const getTopRatedMoviesAPI=async()=>{
+export const getTopRatedMoviesAPI = async () => {
   try {
-    const response=await api.get(`/movie/top_rated?api_key=${TMDB_API_KEY}`);
+    const response = await api.get(`/movie/top_rated?api_key=${TMDB_API_KEY}`);
     return response;
   } catch (error) {
     throw error;
   }
-}
+};
 
-export const getTopRatedSeriesAPI=async()=>{
+export const getTopRatedSeriesAPI = async () => {
   try {
-    const response=await api.get(`/tv/top_rated?api_key=${TMDB_API_KEY}`);
+    const response = await api.get(`/tv/top_rated?api_key=${TMDB_API_KEY}`);
     return response;
   } catch (error) {
     throw error;
   }
-}
+};
 
+export const getMoviesAPI = async (page) => {
+  try {
+    const response = await api.get(
+      `/discover/movie?api_key=${TMDB_API_KEY}&page=${page}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getSeriesAPI = async (page) => {
+  try {
+    const response = await api.get(
+      `/discover/tv?api_key=${TMDB_API_KEY}&page=${page}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

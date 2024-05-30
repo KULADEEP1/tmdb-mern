@@ -75,9 +75,9 @@ const HomePage = () => {
             <span style={{ color: "red" }}>MOVIES</span>
           </Header>
           <Grid container stackable columns={5}>
-            {popularMoviesList.map((movie) => (
+            {popularMoviesList.map((movie,index) => (
               <Grid.Column
-                key={movie.id}
+                key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
                 <DisplayMovie movie={movie} />
@@ -99,9 +99,9 @@ const HomePage = () => {
             <span style={{ color: "red" }}>TV shows</span>
           </Header>
           <Grid container stackable columns={5}>
-            {popularSeriesList.map((movie) => (
+            {popularSeriesList.map((movie,index) => (
               <Grid.Column
-                key={movie.id}
+                key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
                 <DisplayMovie movie={movie} />
@@ -123,9 +123,9 @@ const HomePage = () => {
             <span style={{ color: "red" }}>MOVIES</span>
           </Header>
           <Grid container stackable columns={5}>
-            {topRatedMoviesList.map((movie) => (
+            {topRatedMoviesList.map((movie,index) => (
               <Grid.Column
-                key={movie.id}
+                key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
                 <DisplayMovie movie={movie} />
@@ -147,9 +147,9 @@ const HomePage = () => {
             <span style={{ color: "red" }}>TV shows</span>
           </Header>
           <Grid container stackable columns={5}>
-            {topRatedSeriesList.map((movie) => (
+            {topRatedSeriesList.map((movie,index) => (
               <Grid.Column
-                key={movie.id}
+                key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
                 <DisplayMovie movie={movie} />
