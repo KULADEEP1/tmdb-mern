@@ -25,7 +25,9 @@ const TvShowsList = () => {
     } catch (error) {
       toast.error("Error while fetching data");
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     }
   };
 

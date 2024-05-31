@@ -68,10 +68,21 @@ export const getSeriesAPI = async (page) => {
   }
 };
 
-export const getMovieDataAPI = async (id,type) => {
+
+export const getMediaDataAPI = async (id, type) => {
   try {
-    const response = await api.get(`/${type}/${id}?api_key=${TMDB_API_KEY}`);
-    return response;
+    const [detailsResponse, creditsResponse,recommendationsResponse] = await Promise.all([
+      api.get(`/${type}/${id}?api_key=${TMDB_API_KEY}`),
+      api.get(`/${type}/${id}/credits?api_key=${TMDB_API_KEY}`),
+      api.get(`/${type}/${id}/recommendations?api_key=${TMDB_API_KEY}`),
+    ]);
+
+    const details = detailsResponse.data;
+    const credits = creditsResponse.data;
+    const recommendations = recommendationsResponse.data;
+    const popularCast = credits.cast.filter((member) => member.popularity > 10);
+
+    return { details, popularCast, recommendations };
   } catch (error) {
     throw error;
   }

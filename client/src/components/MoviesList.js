@@ -25,7 +25,9 @@ const MoviesList = () => {
     } catch (error) {
       toast.error("Error while fetching data");
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     }
   };
 
@@ -34,14 +36,14 @@ const MoviesList = () => {
   }, []);
 
   const handleLoadMore = () => {
-    setIsLoadMoreLoading(true); 
+    setIsLoadMoreLoading(true);
     setTimeout(() => {
       const newPage = currentPage + 1;
       const newMovies = moviesList.slice(0, newPage * moviesPerPage);
       setDisplayedMovies(newMovies);
       setCurrentPage(newPage);
-      setIsLoadMoreLoading(false); 
-    }, 1000); 
+      setIsLoadMoreLoading(false);
+    }, 1000);
   };
 
   return (
@@ -77,9 +79,9 @@ const MoviesList = () => {
               <Button
                 color="red"
                 onClick={handleLoadMore}
-                loading={isLoadMoreLoading} 
-                disabled={isLoadMoreLoading} 
-                style={{ width: "150px",marginBottom:"10px" }}
+                loading={isLoadMoreLoading}
+                disabled={isLoadMoreLoading}
+                style={{ width: "150px", marginBottom: "10px" }}
               >
                 <Icon name="plus" />
                 Load More

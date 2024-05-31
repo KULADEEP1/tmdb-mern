@@ -2,16 +2,21 @@ import React from "react";
 import { Card, Image, Icon, Button } from "semantic-ui-react";
 import "../css/DisplayMovie.css";
 import CircularRate from "./CircularRate";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const DisplayMovie = ({ movie,type }) => {
+const DisplayMovie = ({ movie, type }) => {
+  const location = useLocation();
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const handlePlayButton = () => {
     if (user.isAuthenticated) {
-      navigate(`/${type}/${movie.id}`);
+      const currentPath = location.pathname;
+      const targetPath = `/${type}/${movie.id}`;
+      if (currentPath !== targetPath) {
+        navigate(targetPath);
+      }
     } else navigate("/login");
   };
 
@@ -19,7 +24,7 @@ const DisplayMovie = ({ movie,type }) => {
     <Card className="movie-card" style={{ borderRadius: "0px" }}>
       <div className="image-container">
         <Image
-          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} // Adjusted image size
+          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
           alt={movie.title}
           wrapped
           ui={false}

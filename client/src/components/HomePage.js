@@ -1,3 +1,169 @@
+// import React, { useEffect, useState } from "react";
+// import { toast } from "react-toastify";
+// import {
+//   getPopularMoviesAPI,
+//   getPopularSeriesAPI,
+//   getTopRatedMoviesAPI,
+//   getTopRatedSeriesAPI,
+// } from "../utils/tmdb-api";
+// import DisplayMovie from "./DisplayMovie";
+// import { Grid, Header } from "semantic-ui-react";
+// import "../css/HomePage.css";
+
+// const HomePage = () => {
+//   const [popularMoviesList, setPopularMoviesList] = useState([]);
+//   const [popularSeriesList, setPopularSeriesList] = useState([]);
+//   const [topRatedMoviesList, setTopRatedMoviesList] = useState([]);
+//   const [topRatedSeriesList, setTopRatedSeriesList] = useState([]);
+
+//   const getPopularMovies = async () => {
+//     try {
+//       const response = await getPopularMoviesAPI();
+//       setPopularMoviesList(response.data.results.slice(0, 5));
+//     } catch (error) {
+//       toast.error("Error while fetching data");
+//     }
+//   };
+
+//   const getPopularSeries = async () => {
+//     try {
+//       const response = await getPopularSeriesAPI();
+//       setPopularSeriesList(response.data.results.slice(0, 5));
+//     } catch (error) {
+//       toast.error("Error while fetching data");
+//     }
+//   };
+
+//   const getTopRatedMovies = async () => {
+//     try {
+//       const response = await getTopRatedMoviesAPI();
+//       setTopRatedMoviesList(response.data.results.slice(0, 5));
+//     } catch (error) {
+//       toast.error("Error while fetching data");
+//     }
+//   };
+
+//   const getTopRatedSeries = async () => {
+//     try {
+//       const response = await getTopRatedSeriesAPI();
+//       setTopRatedSeriesList(response.data.results.slice(0, 5));
+//     } catch (error) {
+//       toast.error("Error while fetching data");
+//     }
+//   };
+
+//   useEffect(() => {
+//     getPopularMovies();
+//     getPopularSeries();
+//     getTopRatedMovies();
+//     getTopRatedSeries();
+//   }, []);
+
+//   return (
+//     <>
+//       <div className="home-page">
+//         {/* POPULAR MOVIES */}
+//         <div className="popular-movies">
+//           <Header
+//             style={{
+//               marginRight: "auto",
+//               fontSize: "2.5rem",
+//               marginLeft: "50px",
+//             }}
+//           >
+//             <span style={{ color: "white" }}>POPULAR &nbsp;&nbsp;</span>
+//             <span style={{ color: "red" }}>MOVIES</span>
+//           </Header>
+//           <Grid container stackable columns={5}>
+//             {popularMoviesList.map((movie,index) => (
+//               <Grid.Column
+//                 key={index}
+//                 style={{ width: "250px", marginRight: "-20px" }}
+//               >
+//                 <DisplayMovie movie={movie} type="movie" />
+//               </Grid.Column>
+//             ))}
+//           </Grid>
+//         </div>
+
+//         {/* POPULAR SERIES */}
+//         <div className="popular-series">
+//           <Header
+//             style={{
+//               marginRight: "auto",
+//               fontSize: "2.5rem",
+//               marginLeft: "50px",
+//             }}
+//           >
+//             <span style={{ color: "white" }}>POPULAR &nbsp;&nbsp;</span>
+//             <span style={{ color: "red" }}>TV shows</span>
+//           </Header>
+//           <Grid container stackable columns={5}>
+//             {popularSeriesList.map((movie,index) => (
+//               <Grid.Column
+//                 key={index}
+//                 style={{ width: "250px", marginRight: "-20px" }}
+//               >
+//                 <DisplayMovie movie={movie} type="tv" />
+//               </Grid.Column>
+//             ))}
+//           </Grid>
+//         </div>
+
+//         {/* TOP RATED MOVIES */}
+//         <div className="top-rated-movies">
+//           <Header
+//             style={{
+//               marginRight: "auto",
+//               fontSize: "2.5rem",
+//               marginLeft: "50px",
+//             }}
+//           >
+//             <span style={{ color: "white" }}>TOP RATED &nbsp;&nbsp;</span>
+//             <span style={{ color: "red" }}>MOVIES</span>
+//           </Header>
+//           <Grid container stackable columns={5}>
+//             {topRatedMoviesList.map((movie,index) => (
+//               <Grid.Column
+//                 key={index}
+//                 style={{ width: "250px", marginRight: "-20px" }}
+//               >
+//                 <DisplayMovie movie={movie} type="movie" />
+//               </Grid.Column>
+//             ))}
+//           </Grid>
+//         </div>
+
+//         {/* TOP RATED SERIES */}
+//         <div className="top-rated-series">
+//           <Header
+//             style={{
+//               marginRight: "auto",
+//               fontSize: "2.5rem",
+//               marginLeft: "50px",
+//             }}
+//           >
+//             <span style={{ color: "white" }}>TOP RATED &nbsp;&nbsp;</span>
+//             <span style={{ color: "red" }}>TV shows</span>
+//           </Header>
+//           <Grid container stackable columns={5}>
+//             {topRatedSeriesList.map((movie,index) => (
+//               <Grid.Column
+//                 key={index}
+//                 style={{ width: "250px", marginRight: "-20px" }}
+//               >
+//                 <DisplayMovie movie={movie} type="tv" />
+//               </Grid.Column>
+//             ))}
+//           </Grid>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default HomePage;
+
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -9,6 +175,7 @@ import {
 import DisplayMovie from "./DisplayMovie";
 import { Grid, Header } from "semantic-ui-react";
 import "../css/HomePage.css";
+import { Loader } from "semantic-ui-react";
 
 const HomePage = () => {
   const [popularMoviesList, setPopularMoviesList] = useState([]);
@@ -16,12 +183,21 @@ const HomePage = () => {
   const [topRatedMoviesList, setTopRatedMoviesList] = useState([]);
   const [topRatedSeriesList, setTopRatedSeriesList] = useState([]);
 
+  const [loadingPopularMovies, setLoadingPopularMovies] = useState(true);
+  const [loadingPopularSeries, setLoadingPopularSeries] = useState(true);
+  const [loadingTopRatedMovies, setLoadingTopRatedMovies] = useState(true);
+  const [loadingTopRatedSeries, setLoadingTopRatedSeries] = useState(true);
+
   const getPopularMovies = async () => {
     try {
       const response = await getPopularMoviesAPI();
       setPopularMoviesList(response.data.results.slice(0, 5));
     } catch (error) {
       toast.error("Error while fetching data");
+    } finally {
+      setTimeout(() => {
+        setLoadingPopularMovies(false);
+      }, 2000);
     }
   };
 
@@ -31,6 +207,10 @@ const HomePage = () => {
       setPopularSeriesList(response.data.results.slice(0, 5));
     } catch (error) {
       toast.error("Error while fetching data");
+    } finally {
+      setTimeout(() => {
+        setLoadingPopularSeries(false);
+      }, 2000);
     }
   };
 
@@ -40,6 +220,10 @@ const HomePage = () => {
       setTopRatedMoviesList(response.data.results.slice(0, 5));
     } catch (error) {
       toast.error("Error while fetching data");
+    } finally {
+      setTimeout(() => {
+        setLoadingTopRatedMovies(false);
+      }, 2000);
     }
   };
 
@@ -49,6 +233,10 @@ const HomePage = () => {
       setTopRatedSeriesList(response.data.results.slice(0, 5));
     } catch (error) {
       toast.error("Error while fetching data");
+    } finally {
+      setTimeout(() => {
+        setLoadingTopRatedSeries(false);
+      }, 2000);
     }
   };
 
@@ -60,22 +248,24 @@ const HomePage = () => {
   }, []);
 
   return (
-    <>
-      <div className="home-page">
-        {/* POPULAR MOVIES */}
-        <div className="popular-movies">
-          <Header
-            style={{
-              marginRight: "auto",
-              fontSize: "2.5rem",
-              marginLeft: "50px",
-            }}
-          >
-            <span style={{ color: "white" }}>POPULAR &nbsp;&nbsp;</span>
-            <span style={{ color: "red" }}>MOVIES</span>
-          </Header>
+    <div className="home-page">
+      {/* POPULAR MOVIES */}
+      <div className="popular-movies">
+        <Header
+          style={{
+            marginRight: "auto",
+            fontSize: "2.5rem",
+            marginLeft: "50px",
+          }}
+        >
+          <span style={{ color: "white" }}>POPULAR &nbsp;&nbsp;</span>
+          <span style={{ color: "red" }}>MOVIES</span>
+        </Header>
+        {loadingPopularMovies ? (
+          <Loader active inline="centered" />
+        ) : (
           <Grid container stackable columns={5}>
-            {popularMoviesList.map((movie,index) => (
+            {popularMoviesList.map((movie, index) => (
               <Grid.Column
                 key={index}
                 style={{ width: "250px", marginRight: "-20px" }}
@@ -84,81 +274,93 @@ const HomePage = () => {
               </Grid.Column>
             ))}
           </Grid>
-        </div>
-
-        {/* POPULAR SERIES */}
-        <div className="popular-series">
-          <Header
-            style={{
-              marginRight: "auto",
-              fontSize: "2.5rem",
-              marginLeft: "50px",
-            }}
-          >
-            <span style={{ color: "white" }}>POPULAR &nbsp;&nbsp;</span>
-            <span style={{ color: "red" }}>TV shows</span>
-          </Header>
-          <Grid container stackable columns={5}>
-            {popularSeriesList.map((movie,index) => (
-              <Grid.Column
-                key={index}
-                style={{ width: "250px", marginRight: "-20px" }}
-              >
-                <DisplayMovie movie={movie} type="tv" />
-              </Grid.Column>
-            ))}
-          </Grid>
-        </div>
-
-        {/* TOP RATED MOVIES */}
-        <div className="top-rated-movies">
-          <Header
-            style={{
-              marginRight: "auto",
-              fontSize: "2.5rem",
-              marginLeft: "50px",
-            }}
-          >
-            <span style={{ color: "white" }}>TOP RATED &nbsp;&nbsp;</span>
-            <span style={{ color: "red" }}>MOVIES</span>
-          </Header>
-          <Grid container stackable columns={5}>
-            {topRatedMoviesList.map((movie,index) => (
-              <Grid.Column
-                key={index}
-                style={{ width: "250px", marginRight: "-20px" }}
-              >
-                <DisplayMovie movie={movie} type="movie" />
-              </Grid.Column>
-            ))}
-          </Grid>
-        </div>
-
-        {/* TOP RATED SERIES */}
-        <div className="top-rated-series">
-          <Header
-            style={{
-              marginRight: "auto",
-              fontSize: "2.5rem",
-              marginLeft: "50px",
-            }}
-          >
-            <span style={{ color: "white" }}>TOP RATED &nbsp;&nbsp;</span>
-            <span style={{ color: "red" }}>TV shows</span>
-          </Header>
-          <Grid container stackable columns={5}>
-            {topRatedSeriesList.map((movie,index) => (
-              <Grid.Column
-                key={index}
-                style={{ width: "250px", marginRight: "-20px" }}
-              >
-                <DisplayMovie movie={movie} type="tv" />
-              </Grid.Column>
-            ))}
-          </Grid>
-        </div>
+        )}
       </div>
-    </>
+
+      {/* POPULAR SERIES */}
+      <div className="popular-series">
+        <Header
+          style={{
+            marginRight: "auto",
+            fontSize: "2.5rem",
+            marginLeft: "50px",
+          }}
+        >
+          <span style={{ color: "white" }}>POPULAR &nbsp;&nbsp;</span>
+          <span style={{ color: "red" }}>TV shows</span>
+        </Header>
+        {loadingPopularSeries ? (
+          <Loader active inline="centered" />
+        ) : (
+          <Grid container stackable columns={5}>
+            {popularSeriesList.map((movie, index) => (
+              <Grid.Column
+                key={index}
+                style={{ width: "250px", marginRight: "-20px" }}
+              >
+                <DisplayMovie movie={movie} type="tv" />
+              </Grid.Column>
+            ))}
+          </Grid>
+        )}
+      </div>
+
+      {/* TOP RATED MOVIES */}
+      <div className="top-rated-movies">
+        <Header
+          style={{
+            marginRight: "auto",
+            fontSize: "2.5rem",
+            marginLeft: "50px",
+          }}
+        >
+          <span style={{ color: "white" }}>TOP RATED &nbsp;&nbsp;</span>
+          <span style={{ color: "red" }}>MOVIES</span>
+        </Header>
+        {loadingTopRatedMovies ? (
+          <Loader active inline="centered" />
+        ) : (
+          <Grid container stackable columns={5}>
+            {topRatedMoviesList.map((movie, index) => (
+              <Grid.Column
+                key={index}
+                style={{ width: "250px", marginRight: "-20px" }}
+              >
+                <DisplayMovie movie={movie} type="movie" />
+              </Grid.Column>
+            ))}
+          </Grid>
+        )}
+      </div>
+
+      {/* TOP RATED SERIES */}
+      <div className="top-rated-series">
+        <Header
+          style={{
+            marginRight: "auto",
+            fontSize: "2.5rem",
+            marginLeft: "50px",
+          }}
+        >
+          <span style={{ color: "white" }}>TOP RATED &nbsp;&nbsp;</span>
+          <span style={{ color: "red" }}>TV shows</span>
+        </Header>
+        {loadingTopRatedSeries ? (
+          <Loader active inline="centered" />
+        ) : (
+          <Grid container stackable columns={5}>
+            {topRatedSeriesList.map((movie, index) => (
+              <Grid.Column
+                key={index}
+                style={{ width: "250px", marginRight: "-20px" }}
+              >
+                <DisplayMovie movie={movie} type="tv" />
+              </Grid.Column>
+            ))}
+          </Grid>
+        )}
+      </div>
+    </div>
   );
 };
 
