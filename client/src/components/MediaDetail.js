@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { getMediaDataAPI } from "../utils/tmdb-api";
-import { toast } from "react-toastify";
+import { addToFavoriteAPI, removeFavoriteAPI } from "../utils/api";
 import CircularRate from "./CircularRate";
-import "../css/MediaDetail.css";
-import { Loader } from "semantic-ui-react";
 import CastSlide from "./CastSlide";
-import { Grid } from "semantic-ui-react";
 import DisplayMovie from "./DisplayMovie";
+import "../css/MediaDetail.css";
+import { Loader, Grid, Icon } from "semantic-ui-react";
+import { toast } from "react-toastify";
 
 const MediaDetail = () => {
+  const user = useSelector((state) => state.user);
   const location = useLocation();
   const type = location.pathname.split("/")[1];
   const [media, setMedia] = useState({});
   const [casts, setCasts] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const { id } = useParams();
 
   const fetchData = async () => {
@@ -24,21 +27,72 @@ const MediaDetail = () => {
       setMedia(response.details);
       setCasts(response.popularCast.slice(0, 5));
       setRecommendations(response.recommendations.results.slice(0, 5));
-      console.log(response.recommendations.results);
     } catch (error) {
       toast.error("Error while fetching data");
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+      setLoading(false);
     }
   };
 
+ const handleFavorite = async () => {
+   try {
+     const email = user.userInfo.email;
+     const mediaType = type;
+     if (isFavorite) {
+       const response = await removeFavoriteAPI(email, id, mediaType);
+       if (response.status === 201) {
+         setIsFavorite(false);
+         toast.success("Successfully removed from Favorites!");
+          const userFavoritesList = JSON.parse(
+            localStorage.getItem("userFavorites")
+          );
+          const updatedFavorites = userFavoritesList.filter(
+            (fav) => !(fav.mediaId === id && fav.mediaType === type)
+          );
+          localStorage.setItem(
+            "userFavorites",
+            JSON.stringify(updatedFavorites)
+          );
+       }
+     } else {
+       const response = await addToFavoriteAPI(email, id, mediaType);
+       if (response.status === 201) {
+         setIsFavorite(true);
+         toast.success("Successfully added to Favorites");
+         const newFavorite = {
+           mediaId: id,
+           mediaType: type,
+         };
+         const userFavoritesList =
+           JSON.parse(localStorage.getItem("userFavorites")) || [];
+         localStorage.setItem(
+           "userFavorites",
+           JSON.stringify([...userFavoritesList, newFavorite])
+         );
+       }
+     }
+   } catch (error) {
+     toast.error("Could not perform the operation!");
+   }
+ };
+
+
   useEffect(() => {
-    // window.location.reload();
     setLoading(true);
     fetchData();
-  }, [id]);
+  }, [id, type]);
+
+  useEffect(() => {
+    const userFavoritesList = JSON.parse(localStorage.getItem("userFavorites"));
+    if (userFavoritesList) {
+      const favorite = userFavoritesList.find(
+        (fav) => fav.mediaId === id && fav.mediaType === type
+      );
+      setIsFavorite(!!favorite);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [id, type]);
 
   return (
     <div className="media-detail">
@@ -62,6 +116,16 @@ const MediaDetail = () => {
             />
             <div className="media-detail-info">
               <h1>{!media.title ? media.name : media.title}</h1>
+              <Icon
+                onClick={handleFavorite}
+                name={isFavorite ? "heart" : "heart outline"}
+                className="large"
+                style={{
+                  marginLeft: "10px",
+                  cursor: "pointer",
+                  color: isFavorite ? "green" : "white",
+                }}
+              />
               <div className="media-detail-meta">
                 <CircularRate value={media.vote_average / 10} />
                 <div className="genres-container">
@@ -101,7 +165,7 @@ const MediaDetail = () => {
                 key={movie.id}
                 style={{ width: "250px", marginRight: "-20px" }}
               >
-                <DisplayMovie movie={movie} type="movie" />
+                <DisplayMovie movie={movie} type={movie.media_type} />
               </Grid.Column>
             ))}
           </Grid>

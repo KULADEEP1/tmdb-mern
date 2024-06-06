@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, clearUser } from "./redux/slice/userSlice";
 import MoviesList from "./components/MoviesList";
-import TvShowsList from './components/TvShowsList'
+import TvShowsList from "./components/TvShowsList";
 import MediaDetail from "./components/MediaDetail";
 const App = () => {
   const dispatch = useDispatch();
@@ -18,11 +18,13 @@ const App = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const storedUserFavorites = localStorage.getItem("userFavorites");
     if (storedToken && storedUserInfo) {
       dispatch(
         setUser({
           userInfo: storedUserInfo,
           token: storedToken,
+          userFavorites: storedUserFavorites,
         })
       );
     } else {

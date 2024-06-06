@@ -28,13 +28,15 @@ const LoginPage = () => {
       const response = await loginAPI(userData);
       if (response.status === 201) {
         toast.success("User login successfull");
-        const { existUser, token } = response.data;
+        const { existUser, token, userFavorites } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("userInfo", JSON.stringify(existUser));
+        localStorage.setItem("userFavorites", JSON.stringify(userFavorites));
         dispatch(
           setUser({
             userInfo: existUser,
             token: token,
+            userFavorites: userFavorites,
           })
         );
       } else {
@@ -47,8 +49,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user.isAuthenticated) {
-      // console.log("Token:", user.token);
-      // console.log("User Info:", user.userInfo);
       navigate("/");
     }
   }, [user]);
