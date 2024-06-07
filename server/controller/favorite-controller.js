@@ -32,13 +32,11 @@ const removeFavorite = async (req, res) => {
   try {
     const id = req.params.id;
     const { email, mediaType } = req.body;
-    console.log(id, email, mediaType);
     const removedFavorite = await Favorite.findOneAndDelete({
       mediaId: id,
       email: email,
       mediaType: mediaType,
     });
-    console.log(removedFavorite);
     if (!removedFavorite) {
       return res
         .status(404)

@@ -6,6 +6,7 @@ import { addToFavoriteAPI, removeFavoriteAPI } from "../utils/api";
 import CircularRate from "./CircularRate";
 import CastSlide from "./CastSlide";
 import DisplayMovie from "./DisplayMovie";
+import CommentForm from "./CommentForm";
 import "../css/MediaDetail.css";
 import { Loader, Grid, Icon } from "semantic-ui-react";
 import { toast } from "react-toastify";
@@ -34,15 +35,15 @@ const MediaDetail = () => {
     }
   };
 
- const handleFavorite = async () => {
-   try {
-     const email = user.userInfo.email;
-     const mediaType = type;
-     if (isFavorite) {
-       const response = await removeFavoriteAPI(email, id, mediaType);
-       if (response.status === 201) {
-         setIsFavorite(false);
-         toast.success("Successfully removed from Favorites!");
+  const handleFavorite = async () => {
+    try {
+      const email = user.userInfo.email;
+      const mediaType = type;
+      if (isFavorite) {
+        const response = await removeFavoriteAPI(email, id, mediaType);
+        if (response.status === 201) {
+          setIsFavorite(false);
+          toast.success("Successfully removed from Favorites!");
           const userFavoritesList = JSON.parse(
             localStorage.getItem("userFavorites")
           );
@@ -53,29 +54,28 @@ const MediaDetail = () => {
             "userFavorites",
             JSON.stringify(updatedFavorites)
           );
-       }
-     } else {
-       const response = await addToFavoriteAPI(email, id, mediaType);
-       if (response.status === 201) {
-         setIsFavorite(true);
-         toast.success("Successfully added to Favorites");
-         const newFavorite = {
-           mediaId: id,
-           mediaType: type,
-         };
-         const userFavoritesList =
-           JSON.parse(localStorage.getItem("userFavorites")) || [];
-         localStorage.setItem(
-           "userFavorites",
-           JSON.stringify([...userFavoritesList, newFavorite])
-         );
-       }
-     }
-   } catch (error) {
-     toast.error("Could not perform the operation!");
-   }
- };
-
+        }
+      } else {
+        const response = await addToFavoriteAPI(email, id, mediaType);
+        if (response.status === 201) {
+          setIsFavorite(true);
+          toast.success("Successfully added to Favorites");
+          const newFavorite = {
+            mediaId: id,
+            mediaType: type,
+          };
+          const userFavoritesList =
+            JSON.parse(localStorage.getItem("userFavorites")) || [];
+          localStorage.setItem(
+            "userFavorites",
+            JSON.stringify([...userFavoritesList, newFavorite])
+          );
+        }
+      }
+    } catch (error) {
+      toast.error("Could not perform the operation!");
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -169,6 +169,7 @@ const MediaDetail = () => {
               </Grid.Column>
             ))}
           </Grid>
+          <CommentForm mediaType={type} id={id} />
         </>
       )}
     </div>

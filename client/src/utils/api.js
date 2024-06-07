@@ -45,3 +45,12 @@ export const removeFavoriteAPI = async (email, id, mediaType) => {
     throw error;
   }
 };
+
+export const addCommentAPI=async(email,id,mediaType,comment)=>{
+  try {
+    const response=await api.post(`/addcomment/${id}`,{email,mediaType,comment});
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
