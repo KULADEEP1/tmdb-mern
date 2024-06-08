@@ -39,16 +39,41 @@ export const addToFavoriteAPI = async (email, id, mediaType) => {
 
 export const removeFavoriteAPI = async (email, id, mediaType) => {
   try {
-    const response = await api.post(`/removefavorite/${id}`, { email, mediaType });
+    const response = await api.post(`/removefavorite/${id}`, {
+      email,
+      mediaType,
+    });
     return response;
   } catch (error) {
     throw error;
   }
 };
 
-export const addCommentAPI=async(email,id,mediaType,comment)=>{
+export const addCommentAPI = async (email, id, mediaType, comment) => {
   try {
-    const response=await api.post(`/addcomment/${id}`,{email,mediaType,comment});
+    const response = await api.post(`/addcomment/${id}`, {
+      email,
+      mediaType,
+      comment,
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllCommentsAPI = async (id, mediaType) => {
+  try {
+    const response = await api.post("/getallcomments", {id, mediaType });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteCommentAPI=async(commentId)=>{
+  try {
+    const response = await api.delete(`/deletecomment/${commentId}`);
     return response;
   } catch (error) {
     throw error;

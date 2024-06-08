@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 const signupUser = async (req, res) => {
   try {
     const { username, email, password, confirmPassword } = req.body;
-    console.log(username, email, password);
     const existUser = await User.findOne({ email: email });
     if (existUser) {
       return res.status(404).json({ message: "User already exists." });
@@ -37,8 +36,6 @@ const signupUser = async (req, res) => {
   }
 };
 
-
-
 //login user function
 const loginUser = async (req, res) => {
   try {
@@ -66,7 +63,7 @@ const loginUser = async (req, res) => {
       if (err) {
         return res.status(500).json({ msg: "Error while logging in user" });
       }
-      return res.status(201).json({ token, existUser ,userFavorites});
+      return res.status(201).json({ token, existUser, userFavorites });
     });
   } catch (error) {
     return res

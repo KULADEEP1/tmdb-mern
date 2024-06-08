@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getMediaDataAPI } from "../utils/tmdb-api";
-import { addToFavoriteAPI, removeFavoriteAPI } from "../utils/api";
+import {
+  addToFavoriteAPI,
+  removeFavoriteAPI,
+  getAllCommentsAPI,
+} from "../utils/api";
 import CircularRate from "./CircularRate";
 import CastSlide from "./CastSlide";
 import DisplayMovie from "./DisplayMovie";
-import CommentForm from "./CommentForm";
+import CommentForm from "./comments/CommentForm";
+import CommentList from "./comments/CommentList";
 import "../css/MediaDetail.css";
 import { Loader, Grid, Icon } from "semantic-ui-react";
 import { toast } from "react-toastify";
@@ -18,6 +23,7 @@ const MediaDetail = () => {
   const [media, setMedia] = useState({});
   const [casts, setCasts] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
+  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const { id } = useParams();
@@ -78,6 +84,19 @@ const MediaDetail = () => {
   };
 
   useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await getAllCommentsAPI(id, type);
+        setComments(response.data.comments.slice().reverse());
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    };
+    fetchComments();
+  }, [id, type]);
+
+  useEffect(() => {
     setLoading(true);
     fetchData();
   }, [id, type]);
@@ -93,7 +112,9 @@ const MediaDetail = () => {
       setIsFavorite(false);
     }
   }, [id, type]);
-
+ const handleNewComment = (newComment) => {
+   setComments((prevComments) => [newComment,...prevComments]);
+ };
   return (
     <div className="media-detail">
       {loading ? (
@@ -169,7 +190,15 @@ const MediaDetail = () => {
               </Grid.Column>
             ))}
           </Grid>
-          <CommentForm mediaType={type} id={id} />
+          <CommentForm
+            mediaType={type}
+            id={id}
+            onNewComment={handleNewComment}
+          />
+          <CommentList
+            comments={comments}
+            setComments={setComments}
+          />
         </>
       )}
     </div>

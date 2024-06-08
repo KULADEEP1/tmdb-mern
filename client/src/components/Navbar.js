@@ -20,6 +20,7 @@ const Navbar = () => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("token");
     localStorage.removeItem("userFavorites");
+    localStorage.removeItem("userComments");
     dispatch(clearUser());
     navigate("/login");
   };

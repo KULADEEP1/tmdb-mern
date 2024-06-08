@@ -6,14 +6,15 @@ import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser, clearUser } from "./redux/slice/userSlice";
 import MoviesList from "./components/MoviesList";
 import TvShowsList from "./components/TvShowsList";
 import MediaDetail from "./components/MediaDetail";
+import Contact from "./components/Contact";
+
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -56,6 +57,7 @@ const App = () => {
             <Route path="/tv" element={<TvShowsList />} />
             <Route path="/movie/:id" element={<MediaDetail />} />
             <Route path="/tv/:id" element={<MediaDetail />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </Layout>
       </Router>

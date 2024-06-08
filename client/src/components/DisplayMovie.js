@@ -36,7 +36,7 @@ const DisplayMovie = ({ movie, type }) => {
                 {!movie.title ? movie.name : movie.title}
               </div>
               <div className="movie-info">
-                <div className="rating">
+                <div className="rating" style={{marginBottom:"5px"}}>
                   <CircularRate value={movie.vote_average / 10} />
                 </div>
               </div>
