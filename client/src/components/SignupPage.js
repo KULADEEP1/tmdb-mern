@@ -8,10 +8,12 @@ import {
   Message,
   Segment,
 } from "semantic-ui-react";
-import {toast} from 'react-toastify';
-import {signupAPI} from '../utils/api';
+import { toast } from "react-toastify";
+import { signupAPI } from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +25,7 @@ const SignupPage = () => {
       const response = await signupAPI(userData);
       if (response.status === 201) {
         toast.success("User signup successfull");
+        navigate("/login");
       } else {
         toast.error("Invalid Credentials!");
       }
@@ -80,7 +83,7 @@ const SignupPage = () => {
           </Segment>
         </Form>
         <Message>
-          Already have an account? <Link to="/login" >Log in</Link>
+          Already have an account? <Link to="/login">Log in</Link>
         </Message>
       </Grid.Column>
     </Grid>
